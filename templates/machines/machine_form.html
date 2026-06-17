@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-7">
+        <div class="am-card">
+            {% if machine %}
+                <p class="text-muted mb-3">Machine ID: <span class="fw-semibold">{{ machine.machine_id }}</span> (auto-generated)</p>
+            {% endif %}
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="{{ form.machine_name.id_for_label }}" class="form-label">Machine Name</label>
+                    {{ form.machine_name }}
+                    {% for error in form.machine_name.errors %}
+                        <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                    <div class="form-text">e.g. Excavator 01, JCB 01, Crane 01, Loader 01</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.machine_number.id_for_label }}" class="form-label">Machine Number</label>
+                    {{ form.machine_number }}
+                    {% for error in form.machine_number.errors %}
+                        <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.machine_type.id_for_label }}" class="form-label">Machine Type</label>
+                    {{ form.machine_type }}
+                    {% for error in form.machine_type.errors %}
+                        <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.status.id_for_label }}" class="form-label">Status</label>
+                    {{ form.status }}
+                    {% for error in form.status.errors %}
+                        <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger py-2">
+                        {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-accent">
+                        <i class="bi bi-check-circle"></i> Save Machine
+                    </button>
+                    <a href="{% url 'machines:list' %}" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

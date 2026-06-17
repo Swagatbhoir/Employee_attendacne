@@ -1,0 +1,113 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard{% endblock %} | Attendance Manager</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+{% if user.is_authenticated %}
+<div class="app-shell">
+    <aside class="app-sidebar" id="appSidebar">
+        <div class="sidebar-brand">
+            <span class="brand-mark"><i class="bi bi-clipboard2-check-fill"></i></span>
+            <span class="brand-text">Attendance<br>Manager</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="{% url 'dashboard:home' %}" class="nav-link {% if request.resolver_match.app_name == 'dashboard' %}active{% endif %}">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a href="{% url 'attendance:daily' %}" class="nav-link {% if request.resolver_match.app_name == 'attendance' %}active{% endif %}">
+                <i class="bi bi-calendar2-check"></i> Daily Attendance
+            </a>
+            <a href="{% url 'employees:list' %}" class="nav-link {% if request.resolver_match.app_name == 'employees' %}active{% endif %}">
+                <i class="bi bi-people"></i> Employees
+            </a>
+            <a href="{% url 'machines:list' %}" class="nav-link {% if request.resolver_match.app_name == 'machines' %}active{% endif %}">
+                <i class="bi bi-truck"></i> Machines
+            </a>
+
+            <div class="nav-section-label">Reports</div>
+            <a href="{% url 'reports:employee_report' %}" class="nav-link {% if request.resolver_match.url_name == 'employee_report' %}active{% endif %}">
+                <i class="bi bi-person-lines-fill"></i> Employee Report
+            </a>
+            <a href="{% url 'reports:machine_usage_report' %}" class="nav-link {% if request.resolver_match.url_name == 'machine_usage_report' %}active{% endif %}">
+                <i class="bi bi-bar-chart-line"></i> Machine Usage
+            </a>
+            <a href="{% url 'reports:attendance_report' %}" class="nav-link {% if request.resolver_match.url_name == 'attendance_report' %}active{% endif %}">
+                <i class="bi bi-file-earmark-text"></i> Attendance Report
+            </a>
+
+            <div class="nav-section-label">System</div>
+            <a href="{% url 'admin:index' %}" class="nav-link">
+                <i class="bi bi-gear"></i> Django Admin
+            </a>
+            <a href="{% url 'accounts:password_change' %}" class="nav-link {% if request.resolver_match.url_name == 'password_change' %}active{% endif %}">
+                <i class="bi bi-key"></i> Change Password
+            </a>
+        </nav>
+    </aside>
+
+    <div class="app-main">
+        <header class="app-topbar">
+            <button class="btn btn-icon d-lg-none" id="sidebarToggle" type="button" aria-label="Toggle navigation">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="topbar-title">
+                <h1>{% block page_title %}Dashboard{% endblock %}</h1>
+                {% block page_subtitle %}{% endblock %}
+            </div>
+            <div class="topbar-actions">
+                <span class="admin-chip">
+                    <i class="bi bi-person-circle"></i> {{ user.get_username }}
+                </span>
+                <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </header>
+
+        <main class="app-content">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="app-footer">
+            <span>&copy; {% now "Y" %} Attendance Manager &mdash; Admin Panel</span>
+        </footer>
+    </div>
+</div>
+{% else %}
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% block auth_content %}{% endblock %}
+{% endif %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/app.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

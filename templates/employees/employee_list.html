@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Employees{% endblock %}
+{% block page_title %}Employees{% endblock %}
+{% block page_subtitle %}<div class="subtitle">{{ total_count }} record(s) found</div>{% endblock %}
+
+{% block content %}
+<div class="am-card">
+    <div class="am-card-header">
+        <h3>Employee List</h3>
+        <div class="d-flex gap-2">
+            <a href="{% url 'employees:export_csv' %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-download"></i> Export CSV
+            </a>
+            <a href="{% url 'employees:add' %}" class="btn btn-accent btn-sm">
+                <i class="bi bi-person-plus"></i> Add Employee
+            </a>
+        </div>
+    </div>
+
+    <form method="get" class="row g-2 mb-3">
+        <div class="col-12 col-md-5">
+            {{ search_form.q }}
+        </div>
+        <div class="col-12 col-md-3">
+            {{ search_form.status }}
+        </div>
+        <div class="col-12 col-md-2">
+            <button type="submit" class="btn btn-outline-primary w-100">
+                <i class="bi bi-search"></i> Search
+            </button>
+        </div>
+        <div class="col-12 col-md-2">
+            <a href="{% url 'employees:list' %}" class="btn btn-outline-secondary w-100">
+                <i class="bi bi-x-circle"></i> Clear
+            </a>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Full Name</th>
+                    <th>Mobile Number</th>
+                    <th>Status</th>
+                    <th>Created Date</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in page_obj %}
+                <tr>
+                    <td><span class="fw-semibold">{{ employee.employee_id }}</span></td>
+                    <td>{{ employee.full_name }}</td>
+                    <td>{{ employee.mobile_number }}</td>
+                    <td>
+                        <span class="badge-soft badge-status-{{ employee.status|lower }}">
+                            {{ employee.status }}
+                        </span>
+                    </td>
+                    <td>{{ employee.created_at|date:"d M Y" }}</td>
+                    <td class="text-end">
+                        <a href="{% url 'employees:detail' employee.pk %}" class="btn btn-sm btn-outline-secondary" title="View">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a href="{% url 'employees:edit' employee.pk %}" class="btn btn-sm btn-outline-primary" title="Edit">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{% url 'employees:delete' employee.pk %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">
+                        No employees found. <a href="{% url 'employees:add' %}">Add the first employee</a>.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% include 'includes/pagination.html' with page_obj=page_obj %}
+</div>
+{% endblock %}

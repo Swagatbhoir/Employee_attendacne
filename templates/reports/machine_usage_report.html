@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Machine Usage Report{% endblock %}
+{% block page_title %}Machine Usage Report{% endblock %}
+{% block page_subtitle %}<div class="subtitle">Assignment &amp; usage statistics per machine{% if start_date or end_date %} ({{ start_date|date:"d M Y"|default:"start" }} &ndash; {{ end_date|date:"d M Y"|default:"today" }}){% endif %}</div>{% endblock %}
+
+{% block content %}
+<div class="am-card">
+    <div class="am-card-header">
+        <h3>Machine Usage Summary</h3>
+    </div>
+
+    <form method="get" class="row g-2 mb-3">
+        <div class="col-12 col-md-3">
+            <label class="form-label">Start Date</label>
+            {{ form.start_date }}
+        </div>
+        <div class="col-12 col-md-3">
+            <label class="form-label">End Date</label>
+            {{ form.end_date }}
+        </div>
+        <div class="col-12 col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-outline-primary w-100">
+                <i class="bi bi-funnel"></i> Filter
+            </button>
+        </div>
+        <div class="col-12 col-md-2 d-flex align-items-end">
+            <a href="{% url 'reports:machine_usage_report' %}" class="btn btn-outline-secondary w-100">
+                <i class="bi bi-x-circle"></i> Clear
+            </a>
+        </div>
+    </form>
+
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger py-2">
+            {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Machine ID</th>
+                    <th>Machine Name</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th class="text-center">Employees Assigned</th>
+                    <th class="text-center">Daily Usage ({{ today|date:"d M Y" }})</th>
+                    <th class="text-center">Monthly Usage</th>
+                    <th class="text-center">Total Usage{% if start_date or end_date %} (filtered){% endif %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in report_rows %}
+                <tr>
+                    <td class="fw-semibold">{{ row.machine.machine_id }}</td>
+                    <td>{{ row.machine.machine_name }}</td>
+                    <td>{{ row.machine.machine_type }}</td>
+                    <td><span class="badge-soft badge-status-{{ row.machine.status|lower }}">{{ row.machine.status }}</span></td>
+                    <td class="text-center">{{ row.total_employees_assigned }}</td>
+                    <td class="text-center">{{ row.daily_usage }}</td>
+                    <td class="text-center">{{ row.monthly_usage }}</td>
+                    <td class="text-center fw-semibold">{{ row.total_usage }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-4">No machines found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

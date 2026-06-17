@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}<div class="subtitle">Overview for {{ today|date:"d M Y" }}</div>{% endblock %}
+
+{% block content %}
+
+<!-- Employee statistics -->
+<div class="row g-3 mb-3">
+    <div class="col-12">
+        <h2 class="h6 text-uppercase text-muted fw-bold">Employee Statistics</h2>
+    </div>
+    <div class="col-sm-6 col-lg-4">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-primary"><i class="bi bi-people-fill"></i></span>
+            <div>
+                <div class="stat-value">{{ total_employees }}</div>
+                <div class="stat-label">Total Employees</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-4">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-success"><i class="bi bi-person-check-fill"></i></span>
+            <div>
+                <div class="stat-value">{{ active_employees }}</div>
+                <div class="stat-label">Active Employees</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-4">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-danger"><i class="bi bi-person-dash-fill"></i></span>
+            <div>
+                <div class="stat-value">{{ inactive_employees }}</div>
+                <div class="stat-label">Inactive Employees</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Attendance statistics -->
+<div class="row g-3 mb-3">
+    <div class="col-12">
+        <h2 class="h6 text-uppercase text-muted fw-bold">Attendance Statistics &mdash; Today</h2>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-success"><i class="bi bi-check-circle-fill"></i></span>
+            <div>
+                <div class="stat-value">{{ present_today }}</div>
+                <div class="stat-label">Present Today</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-danger"><i class="bi bi-x-circle-fill"></i></span>
+            <div>
+                <div class="stat-value">{{ absent_today }}</div>
+                <div class="stat-label">Absent Today</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-warning"><i class="bi bi-calendar-x-fill"></i></span>
+            <div>
+                <div class="stat-value">{{ leave_today }}</div>
+                <div class="stat-label">Leave Today</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-info"><i class="bi bi-hourglass-split"></i></span>
+            <div>
+                <div class="stat-value">{{ half_day_today }}</div>
+                <div class="stat-label">Half Day Today</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Machine statistics + Quick summary -->
+<div class="row g-3 mb-3">
+    <div class="col-12">
+        <h2 class="h6 text-uppercase text-muted fw-bold">Machine Statistics &amp; Quick Summary</h2>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-primary"><i class="bi bi-truck"></i></span>
+            <div>
+                <div class="stat-value">{{ total_machines }}</div>
+                <div class="stat-label">Total Machines</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-success"><i class="bi bi-gear-fill"></i></span>
+            <div>
+                <div class="stat-value">{{ active_machines }}</div>
+                <div class="stat-label">Active Machines</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-6">
+        <div class="am-card h-100">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="fw-bold">Today's Attendance Percentage</span>
+                <span class="fw-bold">{{ attendance_percentage }}%</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ attendance_percentage }}%;"
+                     aria-valuenow="{{ attendance_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div class="text-muted small mt-2">
+                {{ marked_today }} of {{ active_employees }} active employee(s) marked &middot;
+                {{ not_marked_today }} not yet marked
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick links -->
+<div class="row g-3 mb-3">
+    <div class="col-12">
+        <div class="am-card">
+            <div class="am-card-header">
+                <h3>Quick Actions</h3>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{% url 'attendance:daily' %}" class="btn btn-accent">
+                    <i class="bi bi-calendar2-check"></i> Mark Today's Attendance
+                </a>
+                <a href="{% url 'employees:add' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-person-plus"></i> Add Employee
+                </a>
+                <a href="{% url 'machines:add' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-truck"></i> Add Machine
+                </a>
+                <a href="{% url 'reports:attendance_report' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-file-earmark-text"></i> View Reports
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent attendance -->
+<div class="row g-3">
+    <div class="col-12">
+        <div class="am-card">
+            <div class="am-card-header">
+                <h3>Recent Attendance Entries</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Employee</th>
+                            <th>Status</th>
+                            <th>Machine</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in recent_attendance %}
+                        <tr>
+                            <td>{{ record.date|date:"d M Y" }}</td>
+                            <td>{{ record.employee.employee_id }} &mdash; {{ record.employee.full_name }}</td>
+                            <td>
+                                <span class="badge-soft badge-status-{{ record.attendance_status|lower|slugify }}">
+                                    {{ record.attendance_status }}
+                                </span>
+                            </td>
+                            <td>{{ record.machine.machine_name|default:"--" }}</td>
+                            <td>{{ record.remarks|default:"--" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                No attendance records yet. <a href="{% url 'attendance:daily' %}">Mark today's attendance</a> to get started.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

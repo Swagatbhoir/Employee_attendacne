@@ -1,0 +1,410 @@
+/* =========================================================
+   Attendance Manager - Custom Admin Theme
+   Clean corporate, light theme with slate + amber accent
+   ========================================================= */
+
+:root {
+    --am-sidebar-bg: #1e293b;
+    --am-sidebar-bg-active: #334155;
+    --am-sidebar-text: #cbd5e1;
+    --am-sidebar-text-muted: #94a3b8;
+    --am-accent: #f59e0b;
+    --am-accent-dark: #d97706;
+    --am-bg: #f4f6f9;
+    --am-card-bg: #ffffff;
+    --am-border: #e5e9f0;
+    --am-text: #1e293b;
+    --am-text-muted: #64748b;
+    --am-radius: 0.6rem;
+    --am-sidebar-width: 250px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--am-bg);
+    color: var(--am-text);
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.95rem;
+}
+
+/* ---------- App shell layout ---------- */
+.app-shell {
+    display: flex;
+    min-height: 100vh;
+}
+
+.app-sidebar {
+    width: var(--am-sidebar-width);
+    flex-shrink: 0;
+    background: var(--am-sidebar-bg);
+    color: var(--am-sidebar-text);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1030;
+    transition: transform 0.25s ease;
+}
+
+.app-main {
+    flex: 1;
+    margin-left: var(--am-sidebar-width);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: calc(100% - var(--am-sidebar-width));
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.35rem 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--am-radius);
+    background: var(--am-accent);
+    color: #1e293b;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.brand-text {
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.2;
+    color: #fff;
+    letter-spacing: 0.01em;
+}
+
+.sidebar-nav {
+    padding: 0.9rem 0.75rem;
+    flex: 1;
+}
+
+.sidebar-nav .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--am-sidebar-text);
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--am-radius);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.15rem;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sidebar-nav .nav-link i {
+    font-size: 1.05rem;
+    width: 1.25rem;
+    text-align: center;
+}
+
+.sidebar-nav .nav-link:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+}
+
+.sidebar-nav .nav-link.active {
+    background: var(--am-accent);
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.nav-section-label {
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--am-sidebar-text-muted);
+    margin: 1.1rem 0.85rem 0.4rem;
+    font-weight: 700;
+}
+
+/* ---------- Topbar ---------- */
+.app-topbar {
+    background: var(--am-card-bg);
+    border-bottom: 1px solid var(--am-border);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+}
+
+.topbar-title h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--am-text);
+}
+
+.topbar-title {
+    flex: 1;
+}
+
+.topbar-title small,
+.topbar-title .subtitle {
+    color: var(--am-text-muted);
+    font-size: 0.85rem;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.admin-chip {
+    background: var(--am-bg);
+    border: 1px solid var(--am-border);
+    border-radius: 999px;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--am-text);
+}
+
+.btn-icon {
+    border: 1px solid var(--am-border);
+    background: var(--am-card-bg);
+    border-radius: var(--am-radius);
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ---------- Content ---------- */
+.app-content {
+    padding: 1.5rem;
+    flex: 1;
+}
+
+.app-footer {
+    padding: 1rem 1.5rem;
+    color: var(--am-text-muted);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--am-border);
+    background: var(--am-card-bg);
+}
+
+/* ---------- Cards ---------- */
+.am-card {
+    background: var(--am-card-bg);
+    border: 1px solid var(--am-border);
+    border-radius: var(--am-radius);
+    padding: 1.25rem;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.am-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.am-card-header h2,
+.am-card-header h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+/* ---------- Stat cards ---------- */
+.stat-card {
+    background: var(--am-card-bg);
+    border: 1px solid var(--am-border);
+    border-radius: var(--am-radius);
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 100%;
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--am-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    color: #fff;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--am-text);
+}
+
+.stat-label {
+    color: var(--am-text-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.bg-icon-primary { background: #1e293b; }
+.bg-icon-success { background: #16a34a; }
+.bg-icon-danger { background: #dc2626; }
+.bg-icon-warning { background: var(--am-accent); }
+.bg-icon-info { background: #0ea5e9; }
+.bg-icon-secondary { background: #64748b; }
+
+/* ---------- Tables ---------- */
+.table-responsive {
+    border-radius: var(--am-radius);
+}
+
+.table thead th {
+    background: var(--am-bg);
+    border-bottom: 1px solid var(--am-border);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--am-text-muted);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+}
+
+.badge-status-active,
+.badge-status-present {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.badge-status-inactive,
+.badge-status-absent {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.badge-status-leave {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.badge-status-half-day {
+    background: #e0e7ff;
+    color: #4338ca;
+}
+
+.badge-soft {
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding: 0.35em 0.7em;
+    border-radius: 999px;
+}
+
+/* ---------- Buttons ---------- */
+.btn-accent {
+    background: var(--am-accent);
+    border-color: var(--am-accent);
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.btn-accent:hover {
+    background: var(--am-accent-dark);
+    border-color: var(--am-accent-dark);
+    color: #1e293b;
+}
+
+/* ---------- Auth pages ---------- */
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    padding: 1.5rem;
+}
+
+.auth-card {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
+}
+
+.auth-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.auth-brand .brand-mark {
+    width: 56px;
+    height: 56px;
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+}
+
+/* ---------- Daily attendance table ---------- */
+.attendance-table input,
+.attendance-table select {
+    min-width: 140px;
+}
+
+.attendance-table td {
+    white-space: nowrap;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 991.98px) {
+    .app-sidebar {
+        transform: translateX(-100%);
+    }
+    .app-sidebar.show {
+        transform: translateX(0);
+    }
+    .app-main {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    z-index: 1025;
+}
+
+.sidebar-backdrop.show {
+    display: block;
+}

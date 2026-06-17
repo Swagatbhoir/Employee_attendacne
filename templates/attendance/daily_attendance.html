@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}Daily Attendance{% endblock %}
+{% block page_title %}Daily Attendance{% endblock %}
+{% block page_subtitle %}<div class="subtitle">Mark attendance &amp; assign machines for {{ selected_date|date:"d M Y" }}</div>{% endblock %}
+
+{% block content %}
+
+<div class="row g-3 mb-3">
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-success"><i class="bi bi-check-circle-fill"></i></span>
+            <div>
+                <div class="stat-value">{{ today_stats.present }}</div>
+                <div class="stat-label">Present</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-danger"><i class="bi bi-x-circle-fill"></i></span>
+            <div>
+                <div class="stat-value">{{ today_stats.absent }}</div>
+                <div class="stat-label">Absent</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-warning"><i class="bi bi-calendar-x-fill"></i></span>
+            <div>
+                <div class="stat-value">{{ today_stats.leave }}</div>
+                <div class="stat-label">Leave</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-info"><i class="bi bi-hourglass-split"></i></span>
+            <div>
+                <div class="stat-value">{{ today_stats.half_day }}</div>
+                <div class="stat-label">Half Day</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="am-card mb-3">
+    <form method="get" class="row g-2 align-items-end">
+        <div class="col-12 col-md-4">
+            <label class="form-label">Select Date</label>
+            {{ date_form.date }}
+        </div>
+        <div class="col-12 col-md-2">
+            <button type="submit" class="btn btn-outline-primary w-100">
+                <i class="bi bi-calendar2-week"></i> Load
+            </button>
+        </div>
+        <div class="col-12 col-md-6 text-md-end text-muted small">
+            {{ today_stats.marked }} of {{ today_stats.total }} active employee(s) marked for this date.
+        </div>
+    </form>
+</div>
+
+<div class="am-card">
+    <div class="am-card-header">
+        <h3>Mark Attendance &amp; Assign Machines</h3>
+    </div>
+
+    {% if rows %}
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="date" value="{{ selected_date|date:'Y-m-d' }}">
+        {{ formset.management_form }}
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle attendance-table">
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Name</th>
+                        <th>Attendance Status</th>
+                        <th>Assigned Machine</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for employee, form in rows %}
+                    <tr>
+                        <td class="fw-semibold">{{ employee.employee_id }}</td>
+                        <td>{{ employee.full_name }}</td>
+                        <td>
+                            {{ form.employee_id }}
+                            {{ form.attendance_status }}
+                        </td>
+                        <td>{{ form.machine }}</td>
+                        <td>{{ form.remarks }}</td>
+                    </tr>
+                    {% if form.non_field_errors or form.machine.errors %}
+                    <tr>
+                        <td colspan="5" class="pt-0">
+                            {% for error in form.non_field_errors %}
+                                <div class="text-danger small">{{ employee.employee_id }}: {{ error }}</div>
+                            {% endfor %}
+                            {% for error in form.machine.errors %}
+                                <div class="text-danger small">{{ employee.employee_id }}: {{ error }}</div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex gap-2 mt-3">
+            <button type="submit" class="btn btn-accent">
+                <i class="bi bi-save"></i> Save Attendance
+            </button>
+        </div>
+    </form>
+    {% else %}
+    <p class="text-muted text-center py-4 mb-0">
+        No active employees found. <a href="{% url 'employees:add' %}">Add an employee</a> to begin marking attendance.
+    </p>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const MACHINE_REQUIRED = ['Present', 'Half Day'];
+
+    function syncMachineField(statusSelect) {
+        const row = statusSelect.closest('tr');
+        const machineSelect = row.querySelector('.machine-select');
+        if (!machineSelect) return;
+
+        const requiresMachine = MACHINE_REQUIRED.includes(statusSelect.value);
+        machineSelect.disabled = !requiresMachine;
+
+        if (!requiresMachine) {
+            machineSelect.value = '';
+            machineSelect.classList.add('opacity-50');
+        } else {
+            machineSelect.classList.remove('opacity-50');
+        }
+    }
+
+    document.querySelectorAll('.attendance-status-select').forEach(function (select) {
+        syncMachineField(select);
+        select.addEventListener('change', function () {
+            syncMachineField(select);
+        });
+    });
+});
+</script>
+{% endblock %}

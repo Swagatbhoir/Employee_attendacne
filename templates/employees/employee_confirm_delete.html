@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Employee{% endblock %}
+{% block page_title %}Delete Employee{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-6">
+        <div class="am-card text-center">
+            <i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 2.5rem;"></i>
+            <h2 class="h5 fw-bold mt-3">Delete Employee?</h2>
+            <p class="text-muted">
+                Are you sure you want to delete <strong>{{ employee.full_name }}</strong>
+                ({{ employee.employee_id }})? This will also remove all related attendance records.
+                This action cannot be undone.
+            </p>
+            <form method="post" class="d-flex justify-content-center gap-2">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Yes, Delete
+                </button>
+                <a href="{% url 'employees:list' %}" class="btn btn-outline-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
