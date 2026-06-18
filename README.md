@@ -205,8 +205,8 @@ employee_attendance/
 
 ## Notes
 
-- The database is **SQLite** (`db.sqlite3`), suitable for small/medium
-  deployments. Back up this file regularly.
+- Local development uses **SQLite** (`db.sqlite3`), but production should use
+   **PostgreSQL** via `DATABASE_URL`.
 - All pages other than the login page require authentication.
 - Employee and Machine IDs are generated automatically (`EMP001`, `MCH001`,
   ...) and are not editable from the UI.
