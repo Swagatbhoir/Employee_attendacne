@@ -46,7 +46,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for employee in page_obj %}
+                {% for employee in employees %}
                 <tr>
                     <td><span class="fw-semibold">{{ employee.employee_id }}</span></td>
                     <td>{{ employee.full_name }}</td>
@@ -75,6 +75,6 @@
         </table>
     </div>
 
-    {% include 'includes/pagination.html' with page_obj=page_obj %}
+
 </div>
 {% endblock %}

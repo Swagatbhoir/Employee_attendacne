@@ -34,8 +34,12 @@ def daily_attendance(request):
         if formset.is_valid():
             saved_count = 0
             for form in formset:
+                status = form.cleaned_data.get('attendance_status')
+                if not status:
+                    # Skip employees with no status selected
+                    continue
+
                 employee_id = form.cleaned_data['employee_id']
-                status = form.cleaned_data['attendance_status']
                 machine = form.cleaned_data.get('machine')
                 remarks = form.cleaned_data.get('remarks', '')
 
@@ -61,7 +65,7 @@ def daily_attendance(request):
     else:
         initial_data = []
         for employee in employees:
-            record = existing_records.get(employee.employee_id)
+            record = existing_records.get(employee.pk)
             if record:
                 initial_data.append({
                     'employee_id': employee.id,

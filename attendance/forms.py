@@ -21,6 +21,7 @@ class AttendanceEntryForm(forms.Form):
     employee_id = forms.IntegerField(widget=forms.HiddenInput())
     attendance_status = forms.ChoiceField(
         choices=[('', '-- Select Status --')] + Attendance.STATUS_CHOICES,
+        required=False,
         widget=forms.Select(attrs={
             'class': 'form-select attendance-status-select',
         }),
@@ -47,15 +48,8 @@ class AttendanceEntryForm(forms.Form):
         status = cleaned_data.get('attendance_status')
         machine = cleaned_data.get('machine')
 
-        if not status:
-            raise forms.ValidationError('Please select an attendance status.')
-
-        if status in Attendance.MACHINE_REQUIRED_STATUSES and not machine:
-            raise forms.ValidationError(
-                f'Machine selection is required when status is "{status}".'
-            )
-
-        if status not in Attendance.MACHINE_REQUIRED_STATUSES and machine:
+        # If status is Absent, clear machine assignment
+        if status and status not in Attendance.MACHINE_REQUIRED_STATUSES and machine:
             cleaned_data['machine'] = None
 
         return cleaned_data

@@ -2,7 +2,6 @@ import csv
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -25,12 +24,8 @@ def employee_list(request):
                 Q(employee_id__icontains=query) | Q(full_name__icontains=query)
             )
 
-    paginator = Paginator(employees, 10)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
     context = {
-        'page_obj': page_obj,
+        'employees': employees,
         'search_form': search_form,
         'total_count': employees.count(),
     }

@@ -39,12 +39,6 @@ class Attendance(models.Model):
         return f'{self.employee.employee_id} - {self.date} - {self.attendance_status}'
 
     def clean(self):
-        # Enforce business rule: Present requires a machine.
-        if self.attendance_status in self.MACHINE_REQUIRED_STATUSES and not self.machine:
-            raise ValidationError({
-                'machine': 'Machine assignment is required when attendance status is '
-                           f'"{self.attendance_status}".'
-            })
         # Absent should not carry a machine assignment.
         if self.attendance_status not in self.MACHINE_REQUIRED_STATUSES and self.machine:
             self.machine = None

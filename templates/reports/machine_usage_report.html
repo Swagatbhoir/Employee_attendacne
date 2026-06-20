@@ -5,6 +5,25 @@
 {% block page_subtitle %}<div class="subtitle">Assignment &amp; usage statistics per machine{% if start_date or end_date %} ({{ start_date|date:"d M Y"|default:"start" }} &ndash; {{ end_date|date:"d M Y"|default:"today" }}){% endif %}</div>{% endblock %}
 
 {% block content %}
+
+<div class="row g-3 mb-3">
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-primary"><i class="bi bi-truck"></i></span>
+            <div>
+                <div class="stat-value">{{ total_machines }}</div>
+                <div class="stat-label">Total Machines</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if start_date or end_date %}
+<div class="alert alert-info py-2 mb-3">
+    <i class="bi bi-calendar-range"></i> Showing results for: <strong>{{ start_date|date:"d M Y"|default:"Beginning" }}</strong> &ndash; <strong>{{ end_date|date:"d M Y"|default:"Today" }}</strong>
+</div>
+{% endif %}
+
 <div class="am-card">
     <div class="am-card-header">
         <h3>Machine Usage Summary</h3>

@@ -32,12 +32,18 @@ def employee_report(request):
     employees = Employee.objects.all().order_by('employee_id')
 
     report_rows = []
+    total_present = 0
+    total_absent = 0
     for employee in employees:
         records = attendance_qs.filter(employee=employee)
+        present = records.filter(attendance_status=Attendance.PRESENT).count()
+        absent = records.filter(attendance_status=Attendance.ABSENT).count()
+        total_present += present
+        total_absent += absent
         report_rows.append({
             'employee': employee,
-            'present': records.filter(attendance_status=Attendance.PRESENT).count(),
-            'absent': records.filter(attendance_status=Attendance.ABSENT).count(),
+            'present': present,
+            'absent': absent,
             'total': records.count(),
         })
 
@@ -46,6 +52,9 @@ def employee_report(request):
         'report_rows': report_rows,
         'start_date': start,
         'end_date': end,
+        'total_employees': employees.count(),
+        'total_present': total_present,
+        'total_absent': total_absent,
     }
     return render(request, 'reports/employee_report.html', context)
 
@@ -78,6 +87,7 @@ def machine_usage_report(request):
         'start_date': start,
         'end_date': end,
         'today': today,
+        'total_machines': machines.count(),
     }
     return render(request, 'reports/machine_usage_report.html', context)
 
@@ -111,10 +121,24 @@ def _filtered_attendance(request):
 def attendance_report(request):
     form, records = _filtered_attendance(request)
 
+    present_count = records.filter(attendance_status=Attendance.PRESENT).count()
+    absent_count = records.filter(attendance_status=Attendance.ABSENT).count()
+
+    # Extract filter dates for display
+    filter_start = None
+    filter_end = None
+    if form.is_valid():
+        filter_start = form.cleaned_data.get('start_date')
+        filter_end = form.cleaned_data.get('end_date')
+
     context = {
         'form': form,
         'records': records,
         'total_count': records.count(),
+        'present_count': present_count,
+        'absent_count': absent_count,
+        'filter_start': filter_start,
+        'filter_end': filter_end,
     }
     return render(request, 'reports/attendance_report.html', context)
 

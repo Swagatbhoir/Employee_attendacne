@@ -5,6 +5,43 @@
 {% block page_subtitle %}<div class="subtitle">Attendance totals per employee{% if start_date or end_date %} ({{ start_date|date:"d M Y"|default:"start" }} &ndash; {{ end_date|date:"d M Y"|default:"today" }}){% endif %}</div>{% endblock %}
 
 {% block content %}
+
+<div class="row g-3 mb-3">
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-primary"><i class="bi bi-people-fill"></i></span>
+            <div>
+                <div class="stat-value">{{ total_employees }}</div>
+                <div class="stat-label">Total Employees</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-success"><i class="bi bi-check-circle-fill"></i></span>
+            <div>
+                <div class="stat-value">{{ total_present }}</div>
+                <div class="stat-label">Total Present</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-danger"><i class="bi bi-x-circle-fill"></i></span>
+            <div>
+                <div class="stat-value">{{ total_absent }}</div>
+                <div class="stat-label">Total Absent</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if start_date or end_date %}
+<div class="alert alert-info py-2 mb-3">
+    <i class="bi bi-calendar-range"></i> Showing results for: <strong>{{ start_date|date:"d M Y"|default:"Beginning" }}</strong> &ndash; <strong>{{ end_date|date:"d M Y"|default:"Today" }}</strong>
+</div>
+{% endif %}
+
 <div class="am-card">
     <div class="am-card-header">
         <h3>Employee Attendance Summary</h3>

@@ -5,6 +5,43 @@
 {% block page_subtitle %}<div class="subtitle">{{ total_count }} record(s) found</div>{% endblock %}
 
 {% block content %}
+
+<div class="row g-3 mb-3">
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-primary"><i class="bi bi-file-earmark-text-fill"></i></span>
+            <div>
+                <div class="stat-value">{{ total_count }}</div>
+                <div class="stat-label">Total Records</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-success"><i class="bi bi-check-circle-fill"></i></span>
+            <div>
+                <div class="stat-value">{{ present_count }}</div>
+                <div class="stat-label">Present</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <span class="stat-icon bg-icon-danger"><i class="bi bi-x-circle-fill"></i></span>
+            <div>
+                <div class="stat-value">{{ absent_count }}</div>
+                <div class="stat-label">Absent</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if filter_start or filter_end %}
+<div class="alert alert-info py-2 mb-3">
+    <i class="bi bi-calendar-range"></i> Showing results for: <strong>{{ filter_start|date:"d M Y"|default:"Beginning" }}</strong> &ndash; <strong>{{ filter_end|date:"d M Y"|default:"Today" }}</strong>
+</div>
+{% endif %}
+
 <div class="am-card">
     <div class="am-card-header">
         <h3>Attendance Records</h3>
