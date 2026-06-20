@@ -19,21 +19,15 @@
     </div>
 
     <form method="get" class="row g-2 mb-3">
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-6">
             {{ search_form.q }}
         </div>
-        <div class="col-12 col-md-3">
-            {{ search_form.machine_type }}
-        </div>
-        <div class="col-12 col-md-2">
-            {{ search_form.status }}
-        </div>
-        <div class="col-6 col-md-1">
+        <div class="col-6 col-md-3">
             <button type="submit" class="btn btn-outline-primary w-100">
                 <i class="bi bi-search"></i>
             </button>
         </div>
-        <div class="col-6 col-md-2">
+        <div class="col-6 col-md-3">
             <a href="{% url 'machines:list' %}" class="btn btn-outline-secondary w-100">
                 <i class="bi bi-x-circle"></i> Clear
             </a>
@@ -47,8 +41,6 @@
                     <th>Machine ID</th>
                     <th>Machine Name</th>
                     <th>Machine Number</th>
-                    <th>Machine Type</th>
-                    <th>Status</th>
                     <th class="text-end">Actions</th>
                 </tr>
             </thead>
@@ -58,12 +50,6 @@
                     <td><span class="fw-semibold">{{ machine.machine_id }}</span></td>
                     <td>{{ machine.machine_name }}</td>
                     <td>{{ machine.machine_number }}</td>
-                    <td>{{ machine.machine_type }}</td>
-                    <td>
-                        <span class="badge-soft badge-status-{{ machine.status|lower }}">
-                            {{ machine.status }}
-                        </span>
-                    </td>
                     <td class="text-end">
                         <a href="{% url 'machines:edit' machine.pk %}" class="btn btn-sm btn-outline-primary" title="Edit">
                             <i class="bi bi-pencil"></i>
@@ -75,7 +61,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6" class="text-center text-muted py-4">
+                    <td colspan="4" class="text-center text-muted py-4">
                         No machines found. <a href="{% url 'machines:add' %}">Add the first machine</a>.
                     </td>
                 </tr>

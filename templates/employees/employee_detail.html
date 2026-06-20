@@ -9,7 +9,6 @@
         <div class="am-card">
             <div class="am-card-header">
                 <h3>{{ employee.full_name }}</h3>
-                <span class="badge-soft badge-status-{{ employee.status|lower }}">{{ employee.status }}</span>
             </div>
             <table class="table table-borderless mb-0">
                 <tr>
@@ -19,10 +18,6 @@
                 <tr>
                     <th class="text-muted">Mobile Number</th>
                     <td>{{ employee.mobile_number }}</td>
-                </tr>
-                <tr>
-                    <th class="text-muted">Status</th>
-                    <td>{{ employee.status }}</td>
                 </tr>
                 <tr>
                     <th class="text-muted">Created Date</th>
@@ -60,24 +55,6 @@
                     <div>
                         <div class="stat-value">{{ summary.absent }}</div>
                         <div class="stat-label">Absent</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-sm-3">
-                <div class="stat-card">
-                    <span class="stat-icon bg-icon-warning"><i class="bi bi-calendar-x-fill"></i></span>
-                    <div>
-                        <div class="stat-value">{{ summary.leave }}</div>
-                        <div class="stat-label">Leave</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-sm-3">
-                <div class="stat-card">
-                    <span class="stat-icon bg-icon-info"><i class="bi bi-hourglass-split"></i></span>
-                    <div>
-                        <div class="stat-value">{{ summary.half_day }}</div>
-                        <div class="stat-label">Half Day</div>
                     </div>
                 </div>
             </div>

@@ -8,18 +8,14 @@ from machines.models import Machine
 class Attendance(models.Model):
     PRESENT = 'Present'
     ABSENT = 'Absent'
-    LEAVE = 'Leave'
-    HALF_DAY = 'Half Day'
 
     STATUS_CHOICES = [
         (PRESENT, 'Present'),
         (ABSENT, 'Absent'),
-        (LEAVE, 'Leave'),
-        (HALF_DAY, 'Half Day'),
     ]
 
     # Statuses that require a machine to be assigned
-    MACHINE_REQUIRED_STATUSES = (PRESENT, HALF_DAY)
+    MACHINE_REQUIRED_STATUSES = (PRESENT,)
 
     employee = models.ForeignKey(
         Employee, on_delete=models.CASCADE, related_name='attendance_records'
@@ -43,13 +39,13 @@ class Attendance(models.Model):
         return f'{self.employee.employee_id} - {self.date} - {self.attendance_status}'
 
     def clean(self):
-        # Enforce business rule: Present / Half Day require a machine.
+        # Enforce business rule: Present requires a machine.
         if self.attendance_status in self.MACHINE_REQUIRED_STATUSES and not self.machine:
             raise ValidationError({
                 'machine': 'Machine assignment is required when attendance status is '
                            f'"{self.attendance_status}".'
             })
-        # Absent / Leave should not carry a machine assignment.
+        # Absent should not carry a machine assignment.
         if self.attendance_status not in self.MACHINE_REQUIRED_STATUSES and self.machine:
             self.machine = None
 

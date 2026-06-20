@@ -3,22 +3,11 @@ from django.urls import reverse
 
 
 class Employee(models.Model):
-    STATUS_ACTIVE = 'Active'
-    STATUS_INACTIVE = 'Inactive'
-
-    STATUS_CHOICES = [
-        (STATUS_ACTIVE, 'Active'),
-        (STATUS_INACTIVE, 'Inactive'),
-    ]
-
     employee_id = models.CharField(
         max_length=20, unique=True, editable=False, blank=True
     )
     full_name = models.CharField(max_length=150)
     mobile_number = models.CharField(max_length=15)
-    status = models.CharField(
-        max_length=10, choices=STATUS_CHOICES, default=STATUS_ACTIVE
-    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -47,6 +36,4 @@ class Employee(models.Model):
             new_id = f'EMP{next_number:03d}'
         return new_id
 
-    @property
-    def is_active(self):
-        return self.status == self.STATUS_ACTIVE
+

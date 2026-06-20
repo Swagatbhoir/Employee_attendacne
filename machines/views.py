@@ -18,8 +18,6 @@ def machine_list(request):
 
     if search_form.is_valid():
         query = search_form.cleaned_data.get('q')
-        status = search_form.cleaned_data.get('status')
-        machine_type = search_form.cleaned_data.get('machine_type')
 
         if query:
             machines = machines.filter(
@@ -27,10 +25,6 @@ def machine_list(request):
                 | Q(machine_name__icontains=query)
                 | Q(machine_number__icontains=query)
             )
-        if status:
-            machines = machines.filter(status=status)
-        if machine_type:
-            machines = machines.filter(machine_type=machine_type)
 
     paginator = Paginator(machines, 10)
     page_number = request.GET.get('page')

@@ -77,20 +77,41 @@ WSGI_APPLICATION = 'employee_attendance.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASE_URL = os.environ.get('DATABASE_URL')
+import os
+import dj_database_url
 
+# Read the DATABASE_URL environment variable (set this in production).
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+DATABASES = {}
 if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600),
-    }
+    try:
+        DATABASES = {
+            "default": dj_database_url.parse(
+                DATABASE_URL,
+                conn_max_age=600,
+                ssl_require=True,
+            )
+        }
+    except Exception as e:
+        # Fall back to SQLite if DATABASE_URL is invalid to avoid crashing
+        # the development server. Log a warning so maintainers can fix env.
+        import warnings
+
+        warnings.warn(f"Invalid DATABASE_URL; falling back to SQLite: {e}")
+        DATABASES = {
+            "default": {
+                "ENGINE": "django.db.backends.sqlite3",
+                "NAME": BASE_DIR / "db.sqlite3",
+            }
+        }
 else:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

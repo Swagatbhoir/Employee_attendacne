@@ -38,8 +38,6 @@ def employee_report(request):
             'employee': employee,
             'present': records.filter(attendance_status=Attendance.PRESENT).count(),
             'absent': records.filter(attendance_status=Attendance.ABSENT).count(),
-            'leave': records.filter(attendance_status=Attendance.LEAVE).count(),
-            'half_day': records.filter(attendance_status=Attendance.HALF_DAY).count(),
             'total': records.count(),
         })
 
@@ -113,13 +111,9 @@ def _filtered_attendance(request):
 def attendance_report(request):
     form, records = _filtered_attendance(request)
 
-    from django.core.paginator import Paginator
-    paginator = Paginator(records, 20)
-    page_obj = paginator.get_page(request.GET.get('page'))
-
     context = {
         'form': form,
-        'page_obj': page_obj,
+        'records': records,
         'total_count': records.count(),
     }
     return render(request, 'reports/attendance_report.html', context)

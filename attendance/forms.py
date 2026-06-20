@@ -20,13 +20,13 @@ class AttendanceEntryForm(forms.Form):
     """
     employee_id = forms.IntegerField(widget=forms.HiddenInput())
     attendance_status = forms.ChoiceField(
-        choices=Attendance.STATUS_CHOICES,
+        choices=[('', '-- Select Status --')] + Attendance.STATUS_CHOICES,
         widget=forms.Select(attrs={
             'class': 'form-select attendance-status-select',
         }),
     )
     machine = forms.ModelChoiceField(
-        queryset=Machine.objects.filter(status=Machine.STATUS_ACTIVE),
+        queryset=Machine.objects.all(),
         required=False,
         empty_label='-- Select Machine --',
         widget=forms.Select(attrs={
@@ -46,6 +46,9 @@ class AttendanceEntryForm(forms.Form):
         cleaned_data = super().clean()
         status = cleaned_data.get('attendance_status')
         machine = cleaned_data.get('machine')
+
+        if not status:
+            raise forms.ValidationError('Please select an attendance status.')
 
         if status in Attendance.MACHINE_REQUIRED_STATUSES and not machine:
             raise forms.ValidationError(

@@ -5,7 +5,7 @@ from .models import Employee
 class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
-        fields = ['full_name', 'mobile_number', 'status']
+        fields = ['full_name', 'mobile_number']
         widgets = {
             'full_name': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -15,7 +15,6 @@ class EmployeeForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Enter 10-digit mobile number',
             }),
-            'status': forms.Select(attrs={'class': 'form-select'}),
         }
 
     def clean_mobile_number(self):
@@ -34,9 +33,4 @@ class EmployeeSearchForm(forms.Form):
             'class': 'form-control',
             'placeholder': 'Search by Employee ID or Name...',
         })
-    )
-    status = forms.ChoiceField(
-        required=False,
-        choices=[('', 'All Status')] + Employee.STATUS_CHOICES,
-        widget=forms.Select(attrs={'class': 'form-select'})
     )

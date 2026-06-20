@@ -19,11 +19,8 @@
     </div>
 
     <form method="get" class="row g-2 mb-3">
-        <div class="col-12 col-md-5">
+        <div class="col-12 col-md-8">
             {{ search_form.q }}
-        </div>
-        <div class="col-12 col-md-3">
-            {{ search_form.status }}
         </div>
         <div class="col-12 col-md-2">
             <button type="submit" class="btn btn-outline-primary w-100">
@@ -44,7 +41,6 @@
                     <th>Employee ID</th>
                     <th>Full Name</th>
                     <th>Mobile Number</th>
-                    <th>Status</th>
                     <th>Created Date</th>
                     <th class="text-end">Actions</th>
                 </tr>
@@ -55,11 +51,6 @@
                     <td><span class="fw-semibold">{{ employee.employee_id }}</span></td>
                     <td>{{ employee.full_name }}</td>
                     <td>{{ employee.mobile_number }}</td>
-                    <td>
-                        <span class="badge-soft badge-status-{{ employee.status|lower }}">
-                            {{ employee.status }}
-                        </span>
-                    </td>
                     <td>{{ employee.created_at|date:"d M Y" }}</td>
                     <td class="text-end">
                         <a href="{% url 'employees:detail' employee.pk %}" class="btn btn-sm btn-outline-secondary" title="View">
@@ -75,7 +66,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6" class="text-center text-muted py-4">
+                    <td colspan="5" class="text-center text-muted py-4">
                         No employees found. <a href="{% url 'employees:add' %}">Add the first employee</a>.
                     </td>
                 </tr>

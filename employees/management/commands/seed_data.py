@@ -47,7 +47,7 @@ class Command(BaseCommand):
         for name, mobile in SAMPLE_EMPLOYEES:
             employee, created = Employee.objects.get_or_create(
                 full_name=name,
-                defaults={'mobile_number': mobile, 'status': Employee.STATUS_ACTIVE},
+                defaults={'mobile_number': mobile},
             )
             employees.append(employee)
             if created:
@@ -60,8 +60,6 @@ class Command(BaseCommand):
                 machine_number=number,
                 defaults={
                     'machine_name': name,
-                    'machine_type': machine_type,
-                    'status': Machine.STATUS_ACTIVE,
                 },
             )
             machines.append(machine)
@@ -73,24 +71,19 @@ class Command(BaseCommand):
             Attendance.PRESENT,
             Attendance.PRESENT,
             Attendance.PRESENT,
-            Attendance.HALF_DAY,
             Attendance.ABSENT,
-            Attendance.LEAVE,
         ]
-        active_machines = [m for m in machines if m.status == Machine.STATUS_ACTIVE]
+        machines_list = machines
 
         today = datetime.date.today()
         created_count = 0
         for day_offset in range(days):
             attendance_date = today - datetime.timedelta(days=day_offset)
             for employee in employees:
-                if employee.status != Employee.STATUS_ACTIVE:
-                    continue
-
                 status = random.choice(statuses)
                 machine = None
-                if status in Attendance.MACHINE_REQUIRED_STATUSES and active_machines:
-                    machine = random.choice(active_machines)
+                if status == Attendance.PRESENT and machines_list:
+                    machine = random.choice(machines_list)
 
                 _, created = Attendance.objects.get_or_create(
                     employee=employee,

@@ -65,7 +65,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for record in page_obj %}
+                {% for record in records %}
                 <tr>
                     <td>{{ record.date|date:"d M Y" }}</td>
                     <td class="fw-semibold">{{ record.employee.employee_id }}</td>
@@ -86,7 +86,5 @@
             </tbody>
         </table>
     </div>
-
-    {% include 'includes/pagination.html' with page_obj=page_obj %}
 </div>
 {% endblock %}

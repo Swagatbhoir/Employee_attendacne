@@ -19,14 +19,11 @@ def employee_list(request):
 
     if search_form.is_valid():
         query = search_form.cleaned_data.get('q')
-        status = search_form.cleaned_data.get('status')
 
         if query:
             employees = employees.filter(
                 Q(employee_id__icontains=query) | Q(full_name__icontains=query)
             )
-        if status:
-            employees = employees.filter(status=status)
 
     paginator = Paginator(employees, 10)
     page_number = request.GET.get('page')
@@ -98,8 +95,6 @@ def employee_detail(request, pk):
     summary = {
         'present': Attendance.objects.filter(employee=employee, attendance_status=Attendance.PRESENT).count(),
         'absent': Attendance.objects.filter(employee=employee, attendance_status=Attendance.ABSENT).count(),
-        'leave': Attendance.objects.filter(employee=employee, attendance_status=Attendance.LEAVE).count(),
-        'half_day': Attendance.objects.filter(employee=employee, attendance_status=Attendance.HALF_DAY).count(),
     }
 
     return render(request, 'employees/employee_detail.html', {

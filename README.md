@@ -18,15 +18,12 @@ and reports.
   Employee IDs (e.g. `EMP001`) are auto-generated.
 - **Machine Management**: Add / Edit / Delete / Search / List. Machine IDs
   (e.g. `MCH001`) are auto-generated.
-- **Daily Attendance**: Mark Present / Absent / Leave / Half Day for every
-  active employee in a single table and save in one click. Machine
-  assignment is **required** for Present / Half Day and disabled for
-  Absent / Leave.
+- **Daily Attendance**: Mark Present / Absent for every employee in a single table and save in one click. Machine
+  assignment is **required** for Present status.
 - **Dashboard**: Employee, attendance (today), and machine statistics, plus
   today's attendance percentage and recent activity.
 - **Reports**:
-  - Employee Report (Present / Absent / Leave / Half Day totals, filter by
-    date range)
+  - Employee Report (Present / Absent totals, filter by date range)
   - Machine Usage Report (employees assigned, daily/monthly usage, filter by
     date range)
   - Attendance Report (filter by date, employee, machine, status)
@@ -132,12 +129,8 @@ employee_attendance/
 - **One attendance record per employee per date** — re-submitting the daily
   attendance form for the same date updates the existing record instead of
   creating a duplicate.
-- If attendance status is **Present** or **Half Day**, a **Machine must be
-  selected**.
-- If attendance status is **Absent** or **Leave**, the machine field is
-  disabled and cleared automatically.
-- Only **Active** employees appear on the Daily Attendance screen.
-- Only **Active** machines can be assigned during attendance.
+- If attendance status is **Present**, a **Machine must be selected**.
+- If attendance status is **Absent**, the machine field is disabled and cleared automatically.
 
 ---
 

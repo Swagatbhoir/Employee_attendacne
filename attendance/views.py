@@ -21,9 +21,9 @@ def daily_attendance(request):
     else:
         selected_date = datetime.date.today()
 
-    employees = Employee.objects.filter(status=Employee.STATUS_ACTIVE).order_by('employee_id')
+    employees = Employee.objects.all().order_by('employee_id')
 
-    # Existing attendance records for the selected date, keyed by employee id
+    # Existing attendance records for the selected date, keyed by employee pk
     existing_records = {
         record.employee_id: record
         for record in Attendance.objects.filter(date=selected_date, employee__in=employees)
@@ -61,7 +61,7 @@ def daily_attendance(request):
     else:
         initial_data = []
         for employee in employees:
-            record = existing_records.get(employee.id)
+            record = existing_records.get(employee.employee_id)
             if record:
                 initial_data.append({
                     'employee_id': employee.id,
@@ -72,7 +72,7 @@ def daily_attendance(request):
             else:
                 initial_data.append({
                     'employee_id': employee.id,
-                    'attendance_status': Attendance.PRESENT,
+                    'attendance_status': '',
                     'machine': None,
                     'remarks': '',
                 })
@@ -88,8 +88,6 @@ def daily_attendance(request):
     today_stats = {
         'present': sum(1 for r in existing_records.values() if r.attendance_status == Attendance.PRESENT),
         'absent': sum(1 for r in existing_records.values() if r.attendance_status == Attendance.ABSENT),
-        'leave': sum(1 for r in existing_records.values() if r.attendance_status == Attendance.LEAVE),
-        'half_day': sum(1 for r in existing_records.values() if r.attendance_status == Attendance.HALF_DAY),
         'marked': len(existing_records),
         'total': employees.count(),
     }

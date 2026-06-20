@@ -3,31 +3,11 @@ from django.urls import reverse
 
 
 class Machine(models.Model):
-    STATUS_ACTIVE = 'Active'
-    STATUS_INACTIVE = 'Inactive'
-
-    STATUS_CHOICES = [
-        (STATUS_ACTIVE, 'Active'),
-        (STATUS_INACTIVE, 'Inactive'),
-    ]
-
-    MACHINE_TYPE_CHOICES = [
-        ('Excavator', 'Excavator'),
-        ('JCB', 'JCB'),
-        ('Crane', 'Crane'),
-        ('Loader', 'Loader'),
-        ('Bulldozer', 'Bulldozer'),
-        ('Dumper', 'Dumper'),
-        ('Other', 'Other'),
-    ]
-
     machine_id = models.CharField(
         max_length=20, unique=True, editable=False, blank=True
     )
     machine_name = models.CharField(max_length=150)
     machine_number = models.CharField(max_length=50, unique=True)
-    machine_type = models.CharField(max_length=50, choices=MACHINE_TYPE_CHOICES, default='Other')
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=STATUS_ACTIVE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -55,6 +35,4 @@ class Machine(models.Model):
             new_id = f'MCH{next_number:03d}'
         return new_id
 
-    @property
-    def is_active(self):
-        return self.status == self.STATUS_ACTIVE
+

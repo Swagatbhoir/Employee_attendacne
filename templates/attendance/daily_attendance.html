@@ -25,24 +25,6 @@
             </div>
         </div>
     </div>
-    <div class="col-6 col-lg-3">
-        <div class="stat-card">
-            <span class="stat-icon bg-icon-warning"><i class="bi bi-calendar-x-fill"></i></span>
-            <div>
-                <div class="stat-value">{{ today_stats.leave }}</div>
-                <div class="stat-label">Leave</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-6 col-lg-3">
-        <div class="stat-card">
-            <span class="stat-icon bg-icon-info"><i class="bi bi-hourglass-split"></i></span>
-            <div>
-                <div class="stat-value">{{ today_stats.half_day }}</div>
-                <div class="stat-label">Half Day</div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <div class="am-card mb-3">
@@ -57,7 +39,7 @@
             </button>
         </div>
         <div class="col-12 col-md-6 text-md-end text-muted small">
-            {{ today_stats.marked }} of {{ today_stats.total }} active employee(s) marked for this date.
+            {{ today_stats.marked }} of {{ today_stats.total }} employee(s) marked for this date.
         </div>
     </form>
 </div>
