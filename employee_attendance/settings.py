@@ -5,6 +5,9 @@ Django settings for employee_attendance project.
 from pathlib import Path
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
+
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,7 +23,7 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split(',')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',') if os.environ.get('DJANGO_ALLOWED_HOSTS') else []
 
 
 # Application definition
@@ -81,37 +84,18 @@ import os
 import dj_database_url
 
 # Read the DATABASE_URL environment variable (set this in production).
-DATABASE_URL = os.environ.get("DATABASE_URL")
+DATABASE_URL = "postgresql://postgres.cjjnxcokaayhtjhbjrjm:SakshiRitesh@aws-1-ap-south-1.pooler.supabase.com:6543/postgres"
 
-DATABASES = {}
-if DATABASE_URL:
-    try:
-        DATABASES = {
-            "default": dj_database_url.parse(
-                DATABASE_URL,
-                conn_max_age=600,
-                ssl_require=True,
-            )
-        }
-    except Exception as e:
-        # Fall back to SQLite if DATABASE_URL is invalid to avoid crashing
-        # the development server. Log a warning so maintainers can fix env.
-        import warnings
+if not DATABASE_URL:
+    raise RuntimeError('DATABASE_URL environment variable is not set. PostgreSQL configuration required.')
 
-        warnings.warn(f"Invalid DATABASE_URL; falling back to SQLite: {e}")
-        DATABASES = {
-            "default": {
-                "ENGINE": "django.db.backends.sqlite3",
-                "NAME": BASE_DIR / "db.sqlite3",
-            }
-        }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
+DATABASES = {
+    "default": dj_database_url.parse(
+        DATABASE_URL,
+        conn_max_age=600,
+        ssl_require=True,
+    )
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

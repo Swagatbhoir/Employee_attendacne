@@ -269,12 +269,29 @@ body {
     letter-spacing: 0.04em;
 }
 
-.bg-icon-primary { background: #1e293b; }
-.bg-icon-success { background: #16a34a; }
-.bg-icon-danger { background: #dc2626; }
-.bg-icon-warning { background: var(--am-accent); }
-.bg-icon-info { background: #0ea5e9; }
-.bg-icon-secondary { background: #64748b; }
+.bg-icon-primary {
+    background: #1e293b;
+}
+
+.bg-icon-success {
+    background: #16a34a;
+}
+
+.bg-icon-danger {
+    background: #dc2626;
+}
+
+.bg-icon-warning {
+    background: var(--am-accent);
+}
+
+.bg-icon-info {
+    background: #0ea5e9;
+}
+
+.bg-icon-secondary {
+    background: #64748b;
+}
 
 /* ---------- Tables ---------- */
 .table-responsive {
@@ -292,7 +309,8 @@ body {
     white-space: nowrap;
 }
 
-.table td, .table th {
+.table td,
+.table th {
     vertical-align: middle;
 }
 
@@ -388,9 +406,11 @@ body {
     .app-sidebar {
         transform: translateX(-100%);
     }
+
     .app-sidebar.show {
         transform: translateX(0);
     }
+
     .app-main {
         margin-left: 0;
         width: 100%;
