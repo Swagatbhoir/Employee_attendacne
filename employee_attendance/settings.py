@@ -21,10 +21,12 @@ SECRET_KEY = os.environ.get(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
+DEBUG = os.environ.get("DJANGO_DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',') if os.environ.get('DJANGO_ALLOWED_HOSTS') else []
-
+ALLOWED_HOSTS = os.environ.get(
+    "DJANGO_ALLOWED_HOSTS",
+    "employee-attendacne.vercel.app,.vercel.app,localhost,127.0.0.1"
+).split(",")
 
 # Application definition
 
@@ -84,7 +86,7 @@ import os
 import dj_database_url
 
 # Read the DATABASE_URL environment variable (set this in production).
-DATABASE_URL = "postgresql://postgres.cjjnxcokaayhtjhbjrjm:SakshiRitesh@aws-1-ap-south-1.pooler.supabase.com:6543/postgres"
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 if not DATABASE_URL:
     raise RuntimeError('DATABASE_URL environment variable is not set. PostgreSQL configuration required.')
